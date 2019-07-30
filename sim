@@ -1,0 +1,2 @@
+#!/bin/bash
+gawk -f agisim.awk -f params.awk -f condeutil.awk 
