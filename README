@@ -1,0 +1,53 @@
+
+AGI agent simulator.
+
+Koen Holtman, June 2019.
+
+This work is Open Source, licensed under the Apache License version 2.0.
+
+** Introduction
+
+This AGI agent simulator was written together with the paper
+'Corrigibility with Utility Preservation', available at TBD.
+
+See the paper for more details on the agent and simulation model.
+
+In the standard configuration, the simulator (the version tagged v1)
+will run a set of simulations to produce the figures in the paper.
+
+** Running the simulator
+
+The simulator is implemented as a set of AWK scripts.  AWK is a
+scripting language that comes pre-installed on most Unix systems.
+
+The shell script file file 'sim' contains the AWL invocation needed to
+run the simulator.  To run the simulator, copy all files to a
+directory, and run sim, or an equivalent AWK invocation for your
+system.  When run, the simulator will show output on stdout, and will
+also write several .tex files containing figures for the paper.
+
+While the sim file calls 'gawk', the GNU implementation of AWK, the
+simulator can also be run using other modern implementations of the
+AWK language.
+
+To experiment with different parameter combinations for simulation
+runs. edit the params.awk file and run the simulator again.
+
+** Overview of the code
+
+The agisim.awk file has the main simulation code.  The condeutil.awk
+file has extra simulation code used in appendix A of the paper. The
+params.awk file has code that invokes the simulator with various
+parameters.  Not all invocations are enabled by default, edit the
+dotestruns() function in params.awk to enable a different set.
+
+See the DETAILS file for more detailed remarks about the code.
+
+** Questions, comments, and contributions
+
+Questions, comments, and contributions can be sent to the author at
+Koen.Holtman@ieee.org, or submitted to GitHub, e.g. with the pull
+request function.
+
+If there is interest, the author might do some refactoring to clean up
+the code, or write additional documentation.

@@ -1,0 +1,121 @@
+
+** Some detailed remarks about the AGI simulator code
+
+The code contains some comments, but it is not fully self-documenting
+in the current version.  
+
+The agisim_proto.awk file contains an early prototype version of the
+simulator, when run it will simulate the agent in figure 2 of the
+paper using a fairly straightforward recursive approach, where a
+global variable is updated to store the action trace with the best
+utility score.  This code is included because it might be useful to
+look at as a starting point in understanding the main agisim.awk code.
+
+The function body of eutil() in agisim.awk is very long.  It is long
+in part because AWK has limited facilities for local variable
+declaration and sharing between recursive function calls.  In another
+programming language, splitting the body over multiple functions would
+be preferable.  Less-than-usual-indented comment lines divide the
+function body into several logical parts.
+
+Though many variable and option names are somewhat self-explanatory,
+naming conventions often differ from the terminology and notation used
+in the paper.  In particular:
+
+- the simulator does not implement the A_s function in the paper as a
+  top level call, it only implements the E_s function as the function
+  eutil(), where this function returns an expected utility and has the
+  side effect of creating a set of action traces in the lg_return
+  variable.  World state is not encoded as a u;x pair as in the paper,
+  but is of the world state are distributed over various variables.
+  In particular, the (potentially modified) utility function of the
+  agent is represented by the function call arguments 'state' and
+  'mod'.
+
+- The lg_return value uses a recursive notation, e.g. a(bb|c(d|e))
+  denotes the set of three action traces abb, acd and ace.  The
+  recursive notation quickly becomes unreadable, so (except in some
+  debug mode output) it is unpacked by the unfold* functions before
+  printing.
+
+- time in the paper is called 'depth' in the simulation code.
+
+- petrol cars are just called 'car' in the variable names, electric
+  cars 'ecar'.
+
+- the agent only becomes a full A_s agent as defined in the paper if
+  the parameters 'protect_utility_function=1; protectmode="soft";' are
+  set.
+
+- the f_c function in the paper is activated by
+  corrmode="compensate_future_losses_fulleval", f_0 is
+  corrmode="none". Various correction-style calculations not mentioned
+  in the paper, for example "fine_past_production", are also
+  implemented.
+
+- the g_c function is activated by the flag g_function=1, g_0 with
+  g_function=0.
+
+- the paper mentions that 10 cars are produced in a normal p or e
+  action, but the model inside the simulator produces only car in such
+  a step, with fractional new car production possible, and utility
+  functions that score fractional new cars.  Also, a multiplication
+  factor of 10000 is applied in order to print more readable utility
+  scores. The code that outputs the .tex files in params.awk contains
+  some scaling calculations to map the simulator output the model of
+  the paper.
+
+The eutil() function recursively calculates the expected utility of
+all possible action traces that branch from the world state supplied
+in its arguments.  A cache is used to store results for world states
+that were computed earlier.  Caching creates a massive speedup.  The
+cache hit logic, i.e. the calculation of the statesig variable value,
+leaves out details of the world state that are known to not affect the
+result.
+
+Another speedup is implemented in some of the simulator invocations in
+params.awk.  A speedup can be achieved by doing two runs, one where
+the only possible lobbying actions is <. the other where it is >, and
+then merging the results.  The code in runitcorrmode() in params.awk
+shows a clean example of this technique.  The pick-side-and-combine
+approach to speedup is not always valid, it might not find the trace
+that maximized utility. The alternative mode 'twosidedlobby' is used
+in several cases where it is invalid.  To some extent, the
+separate-and-merge technique is not really needed anymore: it was
+implemented before the cache was implemented, and with the cache
+active, it does not really offer a significant extra speed-up.
+
+As a further speedup, traveling into computational branches taking
+certain actions are suppressed when taking these actions can never
+improve utility under any reasonable parameter settings. e.g. branches
+starting with the > and < actions are suppressed after the button has
+been pressed.
+
+To save on computation time and code complexity, the agent only
+evaluates the performance of a sub-agent using the current utility
+function, in the protect_utility_function code, at the time step where
+a self-modification is applied.  This evaluation of the sub-agent's
+actions under the current utility function is done by 'replaying' all
+action traces produced by the sub-agent, to re-score these actions.
+This replay mode design is somewhat unusual -- an alternative design
+would have a 'shadow' calculation that keeps track of utility score
+according to the original function as the actions are chosen by the
+sub-agent.  Both alternative designs have the problem that care should
+be taken to keep certain parts of the code in sync with each other.
+The choice for the 'replay' alternative is partly a historical
+accident.
+
+The simulator calculates utility scores using the default floating
+point arithmetic facilities in AWK.  There is a potential problem that
+rounding errors could make two equivalent action traces appear to have
+a different score, causing the agent to output fewer traces than are
+there according to in the model.  As a measure to minimize the risk of
+this occurring, and also to keep the output cleaner, the int() operator
+is used to round the time discounting factors in umult[].  This
+precaution does not eliminate the concern entirely. A version of GNU
+awk that implements arbitrary precision arithmetic is available, this
+would avoid all potential problems.  But as far as the author knows,
+the potential problem of rounding differences has never become a real
+problem in any of the simulation runs coded in params.awk.
+
+
