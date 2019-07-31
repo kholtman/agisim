@@ -8,11 +8,12 @@ This work is Open Source, licensed under the Apache License version 2.0.
 ** Introduction
 
 This AGI agent simulator was written together with the paper
-'Corrigibility with Utility Preservation', available at TBD.
+'Corrigibility with Utility Preservation', also stored in this
+repository.
 
 See the paper for more details on the agent and simulation model.
 
-In the standard configuration, the simulator (the version tagged v1)
+In the standard configuration, the simulator (the version tagged v1.1)
 will run a set of simulations to produce the figures in the paper.
 
 ** Running the simulator
