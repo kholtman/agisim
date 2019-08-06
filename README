@@ -1,9 +1,13 @@
 
 AGI agent simulator.
 
-Koen Holtman, June 2019.
+Koen Holtman, June/August 2019.
 
-This work is Open Source, licensed under the Apache License version 2.0.
+This software is Open Source, licensed under the Apache License version 2.0.
+
+The paper in this archive can be redistributed under the Creative
+Commons CC BY-ND 4.0 license.  Please contact the author if you would
+like to obtain broader rights.
 
 ** Introduction
 
@@ -13,7 +17,7 @@ repository.
 
 See the paper for more details on the agent and simulation model.
 
-In the standard configuration, the simulator (the version tagged v1.1)
+In the standard configuration, the simulator (the version tagged v1.2)
 will run a set of simulations to produce the figures in the paper.
 
 ** Running the simulator
