@@ -430,7 +430,7 @@ function eutil(depth,state,timetochange,usofar,mod,replaylist, u,i,ucargainbase,
     if(!(mod=="e_destroying_physics_proces"&&depth>=10))
     {
 	# produce ecars 
-	actiontaken[depth]="p";
+	actiontaken[depth]="e";
 	u=uecargainbase+corr+eutil(depth+1,state,timetochange,usofar+uecargainbase+corr,mod,replaylist);
 	l=lgbase "e" lg_return;
 	
@@ -694,7 +694,7 @@ function eutil(depth,state,timetochange,usofar,mod,replaylist, u,i,ucargainbase,
 
 	# if protect_utility_function==1, we have a rational agent as in the paper
 	# if 0, we get a naive agent as defined in the paper referenced in the paper
-	if(protect_utility_function)
+	if(protect_utility_function&&(lg_return!=""))
 	{
 	    #print "calculate not-tampered-with value of on "l" usofar="usofar;
 	    
