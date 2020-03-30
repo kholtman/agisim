@@ -1,7 +1,7 @@
 
 AGI agent simulator.
 
-Koen Holtman, June/August 2019.
+Koen Holtman, August 2019, March 2020.
 
 This software is Open Source, licensed under the Apache License version 2.0.
 
@@ -56,3 +56,16 @@ request function.
 
 If there is interest, the author might do some refactoring to clean up
 the code, or write additional documentation.
+
+** Version history
+
+The version tagged v1.2 is the first version, used for the simulations
+in the August 2019 paper 'Corrigibility with Utility Preservation'.
+
+The v2 version adds some bug fixes, none which materially change the
+simulation results in the V1 version of the paper above.  As one fix,
+a floating point inaccuracy workaround was added, that arguably made
+the v1.2 version sometimes do the button press one time step too late.
+Also in V2, several additional simulation modes and related simulation
+parameter settings in params.awk were added, with some documentation
+inline in the source files.
