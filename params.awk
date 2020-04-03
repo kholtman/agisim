@@ -952,9 +952,9 @@ function makeupresppfig()
     maxdepth=20;
     for(j=1; j<=3; j++)
     {
-	if(j==1) { let="$A\\:f_0~\\gnull$"; corrmode="none"; }
-	if(j==2) { let="$A\\:f_c~\\gnull$"; corrmode="compensate_future_losses_fulleval"; }
-	if(j==3) { let="$A\\:f_c~g_c$"; g_function=1; }
+	if(j==1) { let="$\\pi^*f_0~\\gnull$"; corrmode="none"; }
+	if(j==2) { let="$\\pi^*f_c~\\gnull$"; corrmode="compensate_future_losses_fulleval"; }
+	if(j==3) { let="$\\pi^*f_c~g_c$"; g_function=1; }
 
 	state=0;
 	timetochange=state1delay;
@@ -1616,7 +1616,7 @@ function makegamblefig()
 	if(j==4) { corrmode="compensate_future_losses_corrpaper_nocond";  let=";a" }
 
 	print "{\\hspace*{-.5ex}$p_w=$  } &" >out;
-	print "{\\normalsize ~~~~~action trace(s) of $A\\:f_{"let"}~"let2"$ }\\\\[.4ex]" >out;
+	print "{\\normalsize ~~~~~action trace(s) of $\\pi^*f_{"let"}~"let2"$ }\\\\[.4ex]" >out;
 	print "\\hline" >out;
 
 	print "-----"corrmode,let"----------";
@@ -1730,8 +1730,7 @@ function makeautolinefig1()
 	if(j==1) { corrmode="none"; let="0"; let2="\\gnull"; ff=1; g_function=0; }
 	if(j==2) { corrmode="compensate_future_losses_fulleval"; ff=1; let="c"; let2="\\gnull"; }
 	if(j==3) { corrmode="compensate_future_losses_fulleval"; ff=1; g_function=1; let="c"; let2="g_c";}
-	#if(j==4) { corrmode="compensate_future_losses_fulleval"; ff=0.99; let=ff"c"; }
-	if(j==4) { corrmode="compensate_future_losses_fulleval"; ff=0.9; let=ff"c"; }
+	if(j==4) { corrmode="compensate_future_losses_fulleval"; ff=0.9; let=ff"c";  g_function=0; let2="\\gnull";}
 
 	corrscale=ff;
 
@@ -1776,7 +1775,7 @@ function makeautolinefig1()
 
 
 	## for the figure, we express the bonus in p-cars given
-	print "$A\\:f_{"let"}~"let2"$&{\\tt "p" }\\\\&\\\\[-.5ex]" >"autolinefig1.tex";
+	print "$\\pi^*f_{"let"}~"let2"$&{\\tt "p" }\\\\&\\\\[-.5ex]" >"autolinefig1.tex";
 
     }
 
